@@ -56,6 +56,60 @@ class CircularLinkedList:
         new_value.next.prev = new_value
         return True
 
+    def delete_begin(self):
+        if not self.head:
+            return False
+        if self.head.next != self.head:
+            self.head.next.prev = self.head.prev
+            self.head.prev.next = self.head.next
+            self.head = self.head.next
+        else:
+            self.head = None
+        return True
+
+    def delete_end(self):
+        if not self.head:
+            return False
+        if self.head.prev != self.head:
+            temp = self.head.prev
+            self.head.prev = temp.prev
+            temp.prev.next = self.head
+        else:
+            self.head = None
+        return True
+
+    def delete_pos(self):
+        pass
+
+    def length(self):
+        if not self.head:
+            return 0
+        count = 0
+        temp = self.head
+        while temp.next != self.head:
+            temp = temp.next
+            count += 1
+        return count + 1
+
+    def reverse(self):
+        pass
+
+    def update_value(self):
+        pass
+
+    def search(self, data):
+        if not self.head:
+            return False
+        temp = self.head
+        while temp.next != self.head:
+            if temp.data == data:
+                return True
+            temp = temp.next
+        if temp.data == data:
+            return True
+        else:
+            return False
+
     def traverse(self):
         temp = self.head
         if not temp:
@@ -75,3 +129,7 @@ circular_linkedlist.traverse()
 circular_linkedlist.insert_pos(1, 1109)
 circular_linkedlist.insert_pos(3, 9109)
 circular_linkedlist.traverse()
+circular_linkedlist.delete_begin()
+circular_linkedlist.traverse()
+print(circular_linkedlist.length())
+print(circular_linkedlist.search(2))
