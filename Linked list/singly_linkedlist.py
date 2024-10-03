@@ -155,6 +155,31 @@ class LinkedList:
             fast = fast.next.next
         return slow.data
 
+    def delete_middle(self):
+        if not self.head:
+            return False
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:
+            prev = slow
+            slow = slow.next
+            fast = fast.next.next
+        prev.next = slow.next
+        return True
+
+    def detect_cycle(self):
+        if not self.head:
+            return False
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        else:
+            return False
+
     def print_list(self):
         """Print the contents of the list in a readable format."""
         current = self.head
@@ -191,3 +216,6 @@ singly_linked_list.insert_begin(109)
 singly_linked_list.insert_begin(109)
 singly_linked_list.print_list()
 print(singly_linked_list.find_middle())
+singly_linked_list.delete_middle()
+singly_linked_list.print_list()
+print(singly_linked_list.detect_cycle())
