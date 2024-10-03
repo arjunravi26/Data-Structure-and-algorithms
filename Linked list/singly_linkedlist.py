@@ -131,6 +131,30 @@ class LinkedList:
             current_node = next_node
         self.head = prev_node
 
+    def sort_list(self):
+        if not self.head:
+            return self.head
+        temp = self.head
+        swapped = True
+        while swapped:
+            swapped = False
+            temp = self.head
+            while temp.next:
+                if temp.data > temp.next.data:
+                    temp.data, temp.next.data = temp.next.data, temp.data
+                    swapped = True
+                temp = temp.next
+
+    def find_middle(self):
+        if not self.head:
+            return False
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow.data
+
     def print_list(self):
         """Print the contents of the list in a readable format."""
         current = self.head
@@ -138,3 +162,32 @@ class LinkedList:
             print(current.data, end=" -> " if current.next else "")
             current = current.next
         print()
+
+
+singly_linked_list = LinkedList()
+singly_linked_list.insert_begin(10)
+singly_linked_list.insert_begin(2)
+singly_linked_list.insert_begin(28)
+singly_linked_list.insert_begin(29)
+singly_linked_list.insert_end(100)
+singly_linked_list.insert_end(78)
+singly_linked_list.print_list()
+singly_linked_list.insert_pos(1, 1109)
+singly_linked_list.insert_pos(3, 9109)
+singly_linked_list.print_list()
+singly_linked_list.delete_first()
+singly_linked_list.print_list()
+print(singly_linked_list.find_length())
+print(singly_linked_list.search(2))
+print(singly_linked_list.delete_data(9109))
+singly_linked_list.print_list()
+# singly_linked_list.update_value(78, 80)
+singly_linked_list.print_list()
+singly_linked_list.reverse()
+singly_linked_list.print_list()
+singly_linked_list.sort_list()
+singly_linked_list.print_list()
+singly_linked_list.insert_begin(109)
+singly_linked_list.insert_begin(109)
+singly_linked_list.print_list()
+print(singly_linked_list.find_middle())

@@ -38,7 +38,7 @@ class CircularLinkedList:
 
     def insert_pos(self, pos, data):
         if not self.head or pos < 1 or pos > self.length() + 1:
-            return False 
+            return False
         if pos == 1:
             return self.insert_begin(data)
 
@@ -111,9 +111,9 @@ class CircularLinkedList:
         temp = self.head
         while temp.next != self.head:
             next_val = temp.next
-            temp.next,temp.prev = temp.prev,temp.next
+            temp.next, temp.prev = temp.prev, temp.next
             temp = next_val
-        temp.next,temp.prev = temp.prev,self.head
+        temp.next, temp.prev = temp.prev, self.head
         self.head = temp
 
     def update_value(self, data, new_data):
