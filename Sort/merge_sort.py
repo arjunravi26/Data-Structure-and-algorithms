@@ -8,8 +8,7 @@ def divide(lst):
 
 def merge(left, right):
     merged = []
-    i = 0
-    j = 0
+    i, j = 0, 0
     while i < len(left) and j < len(right):
         if left[i] < right[j]:
             merged.append(left[i])
@@ -17,12 +16,8 @@ def merge(left, right):
         else:
             merged.append(right[j])
             j += 1
-    while i < len(left):
-        merged.append(left[i])
-        i += 1
-    while j < len(right):
-        merged.append(right[j])
-        j += 1
+    merged.extend(left[i:])
+    merged.extend(right[j:])
     return merged
 
 
