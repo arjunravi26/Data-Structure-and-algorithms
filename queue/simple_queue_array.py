@@ -27,18 +27,18 @@ class Queue:
         self.count -= 1
         return deleted_value
 
-    def isEmpty(self) ->bool:
+    def isEmpty(self) -> bool:
         return self.count == 0
 
-    def isFull(self)->bool:
+    def isFull(self) -> bool:
         return self.count == self.size
 
-    def peek(self)->Optional[int]:
+    def peek(self) -> Optional[int]:
         if self.isEmpty():
             return None
         return self.queue[self.front]
 
-    def __len__(self)->int:
+    def __len__(self) -> int:
         return self.count
 
     def __iter__(self):
