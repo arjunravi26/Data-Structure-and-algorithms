@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Queue:
     def __init__(self, size) -> None:
         self.queue = [None] * size
@@ -9,49 +12,42 @@ class Queue:
 
     def enqueue(self, data):
         if self.isFull():
-            print("Queue is full")
-            return False
+            raise OverflowError("Queue is full")
         self.queue[self.rear] = data
         self.rear = (self.rear + 1) % self.size
-        print(self.rear)
         self.count += 1
-        return data
     # delete from front
 
-    def dequeue(self):
+    def dequeue(self) -> Optional[int]:
         if self.isEmpty():
-            print("Queue is empty")
-            return False
+            raise IndexError("deque from an empty queue")
         deleted_value = self.queue[self.front]
         self.queue[self.front] = None
         self.front = (self.front + 1) % self.size
-        print(self.front)
         self.count -= 1
         return deleted_value
 
-    def isEmpty(self):
+    def isEmpty(self) ->bool:
         return self.count == 0
 
-    def isFull(self):
+    def isFull(self)->bool:
         return self.count == self.size
 
-    def peek(self):
+    def peek(self)->Optional[int]:
         if self.isEmpty():
-            return False
+            return None
         return self.queue[self.front]
 
-    def __len__(self):
+    def __len__(self)->int:
         return self.count
 
     def __iter__(self):
-        if self.count == 0:
-            return False
-        count = self.count - 1
-        for i in self.queue:
-            yield i
-
-    def __str__(self) -> str:
-        return f"{self.queue}"
+        if self.isEmpty():
+            return iter([])
+        idx = self.front
+        for _ in range(self.count):
+            yield self.queue[idx]
+            idx = (idx + 1) % self.size
 
 
 queue = Queue(5)
