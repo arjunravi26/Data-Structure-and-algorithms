@@ -28,9 +28,10 @@ class Queue:
         self.count -= 1
         if self.head is None:
             self.tail = None
+        return dequeued_value
 
     def isEmpty(self) -> bool:
-        return self.head == None
+        return self.head is None
 
     def peek(self):
         if not self.head:
@@ -49,15 +50,14 @@ class Queue:
 
 ll_queue = Queue()
 print(len(ll_queue))
-for i in ll_queue:
-    print(i)
 
 ll_queue.enqueue(10)
 ll_queue.enqueue(20)
 ll_queue.enqueue(30)
+
 for i in ll_queue:
     print(i)
 
-ll_queue.deque()
+ll_queue.dequeue()
 for i in ll_queue:
     print(i)
