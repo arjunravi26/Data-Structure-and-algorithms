@@ -175,6 +175,20 @@ class DoublyLinkedList:
 
     def clear(self):
         self.head = None
+    def split(self):
+        if not self.head:
+            return None
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:
+            prev = slow
+            slow = slow.next
+            fast = fast.next.next
+        first_half = self.head
+        slow.prev = None
+        second_half = slow
+        prev.next = None
+        return first_half,second_half
 
 
 # Create an instance of DoublyLinkedList

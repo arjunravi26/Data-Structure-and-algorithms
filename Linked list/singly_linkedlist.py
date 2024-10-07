@@ -180,6 +180,20 @@ class LinkedList:
         else:
             return False
 
+    def split(self):
+        if not self.head:
+            return None
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:
+            fast = fast.next.next
+            prev = slow
+            slow = slow.next
+        first_half = self.head
+        second_half = slow
+        prev.next = None
+        return first_half, second_half
+
     def print_list(self):
         """Print the contents of the list in a readable format."""
         current = self.head
@@ -219,3 +233,7 @@ print(singly_linked_list.find_middle())
 singly_linked_list.delete_middle()
 singly_linked_list.print_list()
 print(singly_linked_list.detect_cycle())
+singly_linked_list.print_list()
+l1, l2 = singly_linked_list.split()
+print(l1.data)
+print(l2.data)
