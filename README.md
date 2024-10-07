@@ -20,7 +20,7 @@ This repository contains implementations of fundamental data structures and algo
 Clone the repository:
 ```bash
 git clone https://github.com/arjunravi26/Data-Structure-and-algorithms.git
-
+```
 
 Feel free to customize this further based on the specific contents and structure of your repository!
 
