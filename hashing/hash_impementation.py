@@ -68,4 +68,3 @@ dh.delete(20)
 # print(dh.lookup(10))
 # print(hash("addfdfsd"))
 print(dh.seeAll())
-
