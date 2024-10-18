@@ -16,6 +16,7 @@ def heap_sort(arr):
     ran = (len(arr) // 2) - 1
     for i in range(ran, -1, -1):
         heapify(arr, n, i)
+    print(arr)
     for i in range(n-1, 0, -1):
         arr[i], arr[0] = arr[0], arr[i]
         heapify(arr, i, 0)
