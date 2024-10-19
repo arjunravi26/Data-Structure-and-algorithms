@@ -47,6 +47,7 @@ class Stack:
             yield current_node.data
             current_node = current_node.next
 
+
 if __name__ == "__main__":
     stack = Stack()
     stack.push(10)
