@@ -22,7 +22,9 @@ class Stack:
         return len(self.q1) == 0
 
 
-stack = Stack()
-stack.push(10)
-stack.push(20)
-print(stack.pop())
+
+if __name__ == "__main__":
+    stack = Stack()
+    stack.push(10)
+    stack.push(20)
+    print(stack.pop())

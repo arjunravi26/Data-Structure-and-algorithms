@@ -63,7 +63,10 @@ class Deque:
             self.front = -1
             self.rear = -1
         else:
-            self.rear -= 1
+            if self.rear == 0:
+                self.rear == self.size - 1
+            else:
+                self.rear -= 1
         return deleted_value
 
     def peek_front(self):
@@ -75,3 +78,36 @@ class Deque:
         if self.is_empty():
             return None
         return self.deque[self.rear]
+
+    def traverse(self):
+        if self.is_empty():
+            return
+        current = self.front
+        while current != self.rear:
+            print(self.deque[current])
+            if current == self.size - 1:
+                current = 0
+            else:
+                current += 1
+        print(self.deque[current])
+
+
+if __name__ == "__main__":
+    deque = Deque(10)
+    deque.insert_front(10)
+    deque.insert_front(20)
+    deque.insert_rear(30)
+    deque.insert_rear(40)
+    deque.insert_front(50)
+    deque.insert_rear(99)
+    deque.insert_front(33)
+    deque.insert_rear(22)
+    deque.insert_front(55)
+    deque.insert_rear(66)
+    deque.insert_front(77)
+    deque.insert_rear(0)
+    deque.delete_front()
+    deque.delete_front()
+    deque.delete_rear()
+    deque.insert_front(89)
+    deque.traverse()

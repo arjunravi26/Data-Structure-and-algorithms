@@ -9,8 +9,8 @@ class Queue:
         self.s1.append(x)
 
     def dequeue(self):
-        if not self.s1 and not self.s2:
-            return False
+        if self.isEmpty():
+            raise IndexError("Dequeue from empty queue")
         if not self.s2:
             while self.s1:
                 self.s2.append(self.s1.pop())
@@ -18,16 +18,19 @@ class Queue:
 
     def peek(self):
         if not self.s1 and not self.s2:
-            return False
+            raise IndexError("Dequeue from empty queue")
         if not self.s2:
             while self.s1:
                 self.s2.append(self.s1.pop())
         return self.s2[-1]
 
     def isEmpty(self):
-        return self.s2 and self.s1
+        return not (self.s2 or self.s1)
+
+
 queue = Queue()
-queue.enqueue(10)
-queue.enqueue(20)
-queue.enqueue(30)
+queue.enqueue(10)[10, 20, 30]
+queue.enqueue(20)[30, 20, 10]  # queue using stack(first drop)
+queue.enqueue(30)[10, 20, 30]
+print(queue.dequeue())[10, 20, 30]  # stack using queue(last drop)
 print(queue.dequeue())

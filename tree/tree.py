@@ -1,97 +1,115 @@
 class Node:
     def __init__(self, val) -> None:
         self.value = val
-        self.right = None
         self.left = None
+        self.right = None
 
 
 class Tree:
     def __init__(self) -> None:
         self.root = None
 
-    def insert(self, value):
+    def insert(self, val):
         if not self.root:
-            self.root = Node(value)
+            self.root = Node(val)
             return
         queue = [self.root]
         while queue:
-            current = queue.pop(0)
-            if current.left is None:
-                current.left = Node(value)
+            curr = queue.pop(0)
+            if curr.left is None:
+                curr.left = Node(val)
                 return
             else:
-                queue.append(current.left)
-            if current.right is None:
-                current.right = Node(value)
+                queue.append(curr.left)
+            if curr.right is None:
+                curr.right = Node(val)
                 return
             else:
-                queue.append(current.right)
+                queue.append(curr.right)
 
-    def search(self):
-        pass
-
-    def delete(self, value):
+    def delete(self, val):
         if not self.root:
-            return False
-        queue = [self.root]
-        node_to_delete = None
-        last_node = None
-        while queue:
-            last_node = queue.pop(0)
-
-            if last_node.value == value:
-                node_to_delete = last_node
-            if last_node.left:
-                queue.append(last_node.left)
-            if last_node.right:
-                queue.append(last_node.right)
-        if not last_node:
-            return False
-        node_to_delete.value = last_node.value
-        self._delete_last(last_node)
-
-    def _delete_last(self, dl_node):
+            return None
+        node_delete = None
         queue = [self.root]
         while queue:
-            current = queue.pop(0)
-            if current.left:
-                if current.left == dl_node:
-                    current.left = None
+            curr = queue.pop(0)
+            if curr.value == val:
+                node_delete = curr
+            if curr.left is not None:
+                queue.append(curr.left)
+            if curr.right is not None:
+                queue.append(curr.right)
+        if not node_delete:
+            return False
+        node_delete.value = curr.value
+        self._delete_last(curr)
+
+    def _delete_last(node):
+        queue = [node]
+        while queue:
+            curr = queue.pop(0)
+            if curr.left:
+                if curr.left == node:
+                    curr.left = None
                 else:
-                    queue.append(current.left)
-            if current.right:
-                if current.right == dl_node:
-                    current.right = None
+                    queue.append(curr.left)
+            if curr.right:
+                if curr.right == node:
+                    curr.right = None
                 else:
-                    queue.append(current.right)
+                    queue.append(curr.right)
 
     def search(self, val):
         if not self.root:
             return False
         queue = [self.root]
         while queue:
-            current = queue.pop(0)
-            if current.value == val:
+            curr = queue.pop(0)
+            if curr.value == val:
                 return True
-            if current.left:
-                queue.append(current.left)
-            if current.right:
-                queue.append(current.right)
+            if curr.left:
+                queue.append(curr.left)
+            if curr.right:
+                queue.append(curr.right)
         return False
 
+    def find_depth(self, node, key, depth=0):
+        if node is None:
+            return -1
+        if node.value == key:
+            return depth
+        left_depth = self.find_depth(node.left, key, depth+1)
+        if left_depth != -1:
+            return left_depth
+        return self.find_depth(node.right, key, depth+1)
+
+    def height(self, node):
+        if node is None:
+            return -1
+        left_height = self.height(node.left)
+        right_height = self.height(node.right)
+        return max(left_height, right_height) + 1
+
     def inorder(self, node):
-        if not node:
+        if node is None:
             return None
         self.inorder(node.left)
-        print(node.value, end=" ")
+        print(node.value)
         self.inorder(node.right)
 
 
 bt = Tree()
-for i in range(10):
-    bt.insert(i)
+bt.insert(10)
+bt.insert(20)
+bt.insert(30)
+bt.insert(40)
+bt.insert(50)
+bt.insert(60)
+bt.insert(70)
+bt.insert(80)
 bt.inorder(bt.root)
-bt.delete(3)
-print()
-bt.inorder(bt.root)
-print(bt.search(1))
+print(bt.search(130))
+print(bt.find_depth(bt.root, 40))
+print(bt.height(bt.root))
+bt.print_tree(bt.root)
