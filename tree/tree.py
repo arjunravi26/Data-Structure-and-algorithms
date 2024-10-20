@@ -74,20 +74,20 @@ class Tree:
                 queue.append(curr.right)
         return False
 
-    def find_depth(self, node, key, depth=0):
-        if node is None:
+    def find_depth(self, root, key, depth=0):
+        if root is None:
             return -1
-        if node.value == key:
+        if root.value == key:
             return depth
-        left_depth = self.find_depth(node.left, key, depth+1)
+        left_depth = self.find_depth(root.left, key, depth+1)
         if left_depth != -1:
             return left_depth
-        return self.find_depth(node.right, key, depth+1)
+        return self.find_depth(root.right, key, depth+1)
 
     def height(self, node):
         if node is None:
             return -1
-        left_height = self.height(node.left)
+        left_height = self.height(node.left) 
         right_height = self.height(node.right)
         return max(left_height, right_height) + 1
 

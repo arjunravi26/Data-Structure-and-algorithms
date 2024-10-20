@@ -5,154 +5,141 @@ class Node:
         self.right = None
 
 
-class Tree:
+class BST:
     def __init__(self) -> None:
         self.root = None
 
     def insert(self, val):
-        if not self.root:
+        if self.root is None:
             self.root = Node(val)
-        else:
-            self._insert_rec(self.root, val)
+            return
+        self._insert_recur(self.root, val)
 
-    def _insert_rec(self, node, val):
+    def _insert_recur(self, node, val):
         if val < node.value:
             if node.left is None:
                 node.left = Node(val)
-                return
             else:
-                self._insert_rec(node.left, val)
+                self._insert_recur(node.left, val)
         elif val > node.value:
             if node.right is None:
                 node.right = Node(val)
-                return
             else:
-                self._insert_rec(node.right, val)
-
-    def delete_node(self, root, key):
-        if root is None:
-            return root
-        if key < root.value:
-            root.left = self.delete_node(root.left, key)
-        elif key > root.value:
-            root.right = self.delete_node(root.right, key)
+                self._insert_recur(node.right, val)
         else:
-            if root.left is None:
-                return root.right
-            elif root.right is None:
-                return root.left
-            temp = self.minvalnode(root.right)
-            root.value = temp.value
-            root.right = self.delete_node(root.right, temp.value)
-        return root
+            return
 
-    def search(self, val):
-        return self._search_rec(self.root, val)
+    def delete(self, key, node):
+        if self.root is None:
+            return None
+        while node:
+            if key < node.value:
+                node.left = self.delete(key, node.left)
+            elif key > node.value:
+                node.right = self.delete(key, node.right)
+            else:
+                if node.left is None:
+                    return node.right
+                if node.right is None:
+                    return node.left
+                temp = self.find_min(node.right)
+                node.value = temp.value
+                node.right = self.delete(temp.value, node.right)
+            return node
 
-    def _search_rec(self, node, val):
-        if node is None:
+    def search(self, key):
+        def _search(node, key):
+            if node is None:
+                return False
+            if node.value == key:
+                return True
+            elif key < node.value:
+                return _search(node.left, key)
+            else:
+                return _search(node.right, key)
+        if self.root is None:
             return False
-        if val == node.value:
-            return True
-        elif val < node.value:
-            return self._search_rec(node.left, val)
+        return _search(self.root, key)
+
+    def sum_of_nodes(self):
+        return self._sum_nodes_rc(self.root)
+
+    def _sum_nodes_rc(self, node):
+        if node is None:
+            return 0
+        return (node.value + self._sum_nodes_rc(node.left) + self._sum_nodes_rc(node.right))
+
+    def findclosetnode(self, target):
+        return self.findcloset_rc(self.root, target)
+
+    def findcloset_rc(self, node, target, closet=None):
+        if node is None:
+            return closet
+        if closet is None:
+            closet = node.value
+        if abs(node.value - target) < abs(node.value - closet):
+            closet = node.value
+        if target < node.value:
+            self.findcloset_rc(node.left, target, closet)
         else:
-            return self._search_rec(node.right, val)
+            self.findcloset_rc(node.right, target, closet)
+        return closet
 
-    def minvalnode(self, node):
-        curr = node
-        while curr.left is not None:
-            curr = curr.left
-        return curr
-
-    def inorder(self, node):
-        if node is not None:
-            self.inorder(node.left)
-            print(node.value, end=" ")
-            self.inorder(node.right)
+    def find_min(self, node):
+        if node is None:
+            return None
+        current = node
+        while current.left:
+            current = current.left
+        return current
 
     def postorder(self, node):
-        if node is not None:
-            self.postorder(node.left)
-            self.postorder(node.right)
-            print(node.value, end=" ")
+        if node is None:
+            return
+        self.inorder(node.left)
+        self.inorder(node.right)
+        print(node.value)
+
+    def inorder(self, node):
+        if node is None:
+            return
+        self.inorder(node.left)
+        print(node.value)
+        self.inorder(node.right)
 
     def preorder(self, node):
-        if node is not None:
-            print(node.value, end=" ")
-            self.preorder(node.left)
-            self.preorder(node.right)
-
-    def sumofnodes(self):
-        return self.sum_rc(self.root)
-
-    def sum_rc(self, node):
         if node is None:
-            return 0
-        return (node.data + self.sum_rc(node.left) + self.sum_rc(node.right))
+            return
+        print(node.value)
+        self.inorder(node.left)
+        self.inorder(node.right)
 
-    def count_rc(self, node):
+    def height(self, node):
         if node is None:
-            return 0
-        return (1+self.count_rc(node.left)+self.count_rc(node.right))
-
-    def countofleaf(self):
-        return self.cntofleaf(self.root)
-
-    def cntofleaf(self, node):
-        if node is None:
-            return 0
-        if node.left is None and node.right is None:
-            return 1
-        return (self.cntofleaf(node.left)+self.cntofleaf(node.right))
-
-    def is_bst(self):
-        return self.is_bst_rc(self.root, float('-inf'), float('inf'))
-
-    def is_bst_rc(self, node, left, right):
-        if node is None:
-            return True
-        if not (left < node.data < right):
-            return False
-        return (self.is_bst_rc(node.left, left, node.data)) and (self.is_bst_rc(node.right, node.data, right))
-
-    def findclosest(self, target):
-        return self.findclosest_rc(self.root, target)
-
-    def findclosest_rc(self, node, target, closest=None):
-        if node is None:
-            return closest
-        if closest is None:
-            closest = node.data
-        if abs(target - closest) > abs(target - node.data):
-            closest = node.data
-        if target < node.data:
-            return self.findclosest_rc(node.left, target, closest)
-        elif target > node.data:
-            return self.findclosest_rc(node.right, target, closest)
-        else:
-            return closest
-
-    def minvalnode(self, node):
-        curr = node
-        while curr.left is not None:
-            curr = curr.left
-        return curr
+            return -1
+        left = self.height(node.left)
+        right = self.height(node.right)
+        return max(left, right) + 1
+    def depth(self,root,key,depth=0):
+        if root is None:
+            return -1
+        if root.value == key:
+            return depth
+        left = self.depth(root.left,key,depth+1)
+        if left != -1:
+            return depth
+        return self.depth(root.right,key,depth+1)
 
 
-bst = Tree()
-bst.insert(10)
-bst.insert(20)
-bst.insert(30)
-bst.insert(40)
-bst.insert(50)
-
-print("Preorder traversal:")
-bst.preorder(bst.root)
-print("\nInorder traversal before deletion:")
-bst.inorder(bst.root)
-
-bst.delete_node(bst.root, 40)
-
-print("\nInorder traversal after deleting 40:")
-bst.inorder(bst.root)
+tree = BST()
+tree.insert(10)
+tree.insert(20)
+tree.insert(0)
+tree.insert(100)
+# tree.delete(10, tree.root)
+tree.inorder(tree.root)
+print(tree.search(20))
+print(tree.sum_of_nodes())
+print(tree.findclosetnode(20))
+print(tree.depth(tree.root,100))
+print(tree.height(tree.root))
