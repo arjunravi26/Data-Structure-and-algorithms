@@ -4,104 +4,142 @@ class Node:
         self.left = None
         self.right = None
 
-class Tree:
+
+class BST:
     def __init__(self) -> None:
         self.root = None
 
     def insert(self, val):
-        if not self.root:
+        if self.root is None:
             self.root = Node(val)
-        else:
-            self._insert_rec(self.root, val)
+            return
+        self._insert_recur(self.root, val)
 
-    def _insert_rec(self, node, val):
+    def _insert_recur(self, node, val):
         if val < node.value:
             if node.left is None:
                 node.left = Node(val)
-                return
             else:
-                self._insert_rec(node.left, val)
-        elif val > node.value:  # Skipping duplicates
+                self._insert_recur(node.left, val)
+        elif val > node.value:
             if node.right is None:
                 node.right = Node(val)
-                return
             else:
-                self._insert_rec(node.right, val)
-
-    def delete_node(self, root, key):
-        if root is None:
-            return root
-        
-        if key < root.value:
-            root.left = self.delete_node(root.left, key)
-        elif key > root.value:
-            root.right = self.delete_node(root.right, key)
+                self._insert_recur(node.right, val)
         else:
-            # Node with only one child or no child
-            if root.left is None:
-                return root.right
-            elif root.right is None:
-                return root.left
+            return
 
-            # Node with two children, get the inorder successor
-            temp = self.minvalnode(root.right)
-            root.value = temp.value  # Fixed the attribute to 'value'
-            root.right = self.delete_node(root.right, temp.value)
+    def delete(self, key, node):
+        if self.root is None:
+            return None
+        while node:
+            if key < node.value:
+                node.left = self.delete(key, node.left)
+            elif key > node.value:
+                node.right = self.delete(key, node.right)
+            else:
+                if node.left is None:
+                    return node.right
+                if node.right is None:
+                    return node.left
+                temp = self.find_min(node.right)
+                node.value = temp.value
+                node.right = self.delete(temp.value, node.right)
+            return node
 
-        return root
-
-    def search(self, val):
-        return self._search_rec(self.root, val)
-
-    def _search_rec(self, node, val):
-        if node is None:
+    def search(self, key):
+        def _search(node, key):
+            if node is None:
+                return False
+            if node.value == key:
+                return True
+            elif key < node.value:
+                return _search(node.left, key)
+            else:
+                return _search(node.right, key)
+        if self.root is None:
             return False
-        if val == node.value:
-            return True
-        elif val < node.value:
-            return self._search_rec(node.left, val)  # Fixed incorrect function call
+        return _search(self.root, key)
+
+    def sum_of_nodes(self):
+        return self._sum_nodes_rc(self.root)
+
+    def _sum_nodes_rc(self, node):
+        if node is None:
+            return 0
+        return (node.value + self._sum_nodes_rc(node.left) + self._sum_nodes_rc(node.right))
+
+    def findclosetnode(self, target):
+        return self.findcloset_rc(self.root, target)
+
+    def findcloset_rc(self, node, target, closet=None):
+        if node is None:
+            return closet
+        if closet is None:
+            closet = node.value
+        if abs(node.value - target) < abs(node.value - closet):
+            closet = node.value
+        if target < node.value:
+            self.findcloset_rc(node.left, target, closet)
         else:
-            return self._search_rec(node.right, val)
+            self.findcloset_rc(node.right, target, closet)
+        return closet
 
-    def minvalnode(self, node):
-        curr = node
-        while curr.left is not None:
-            curr = curr.left
-        return curr
-
-    # Traversal methods:
-    def inorder(self, node):
-        if node is not None:
-            self.inorder(node.left)
-            print(node.value, end=" ")
-            self.inorder(node.right)
+    def find_min(self, node):
+        if node is None:
+            return None
+        current = node
+        while current.left:
+            current = current.left
+        return current
 
     def postorder(self, node):
-        if node is not None:
-            self.postorder(node.left)
-            self.postorder(node.right)
-            print(node.value, end=" ")
+        if node is None:
+            return
+        self.inorder(node.left)
+        self.inorder(node.right)
+        print(node.value)
+
+    def inorder(self, node):
+        if node is None:
+            return
+        self.inorder(node.left)
+        print(node.value)
+        self.inorder(node.right)
 
     def preorder(self, node):
-        if node is not None:
-            print(node.value, end=" ")
-            self.preorder(node.left)  # Fixed traversal method call
-            self.preorder(node.right)  # Fixed traversal method call
+        if node is None:
+            return
+        print(node.value)
+        self.inorder(node.left)
+        self.inorder(node.right)
 
-# Example usage
-bst = Tree()
-bst.insert(10)
-bst.insert(20)
-bst.insert(30)
-bst.insert(40)
-bst.insert(50)
+    def height(self, node):
+        if node is None:
+            return -1
+        left = self.height(node.left)
+        right = self.height(node.right)
+        return max(left, right) + 1
+    def depth(self,root,key,depth=0):
+        if root is None:
+            return -1
+        if root.value == key:
+            return depth
+        left = self.depth(root.left,key,depth+1)
+        if left != -1:
+            return depth
+        return self.depth(root.right,key,depth+1)
 
-print("Preorder traversal:")
-bst.preorder(bst.root)
-print("\nInorder traversal before deletion:")
-bst.inorder(bst.root)
 
-bst.delete_node(bst.root, 40)
-
-print("\nInorder traversal after deleting 40:")
-bst.inorder(bst.root)
+tree = BST()
+tree.insert(10)
+tree.insert(20)
+tree.insert(0)
+tree.insert(100)
+# tree.delete(10, tree.root)
+tree.inorder(tree.root)
+print(tree.search(20))
+print(tree.sum_of_nodes())
+print(tree.findclosetnode(20))
+print(tree.depth(tree.root,100))
+print(tree.height(tree.root))
