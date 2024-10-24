@@ -22,7 +22,7 @@ class Digraph:
         if vertex in self.dict:
             for v in self.dict:
                 if vertex in self.dict[v]:
-                    self.dict[v].remove(vertex)  # FIXED HERE
+                    self.dict[v].remove(vertex)
             del self.dict[vertex]
 
     def remove_edge(self, vertex, edge):
@@ -61,28 +61,27 @@ class Digraph:
                         shortest_path = sp
         return shortest_path
 
-    def bfs(self, start):
-        visited = set()
-        queue = [start]
+    def bfs(self,node):
+        visited = []
+        queue = [node]
         while queue:
-            node = queue.pop(0)
-            if node not in visited:
-                print(node)
-                visited.add(node)
-                queue.extend(self.dict.get(node, []))
+            curr = queue.pop(0)
+            if curr not in visited:
+                print(curr)
+                visited.add(curr)
+                queue.extend(self.dict.get(curr,[]))
         return visited
-
-    def dfs(self, start):
+    def dfs(self,node):
         visited = set()
-        stack = [start]
+        stack = [node]
         while stack:
-            node = stack.pop()
-            if node not in visited:
-                visited.add(node)
-                print(node)
-                stack.extend(self.dict.get(node, []))
+            curr = stack.pop()
+            if curr not in visited:
+                print(curr)
+                visited.add(curr)
+                stack.extend(self.dict.get(curr,[]))
         return visited
-
+            
     def __str__(self) -> str:
         return str(self.dict)
 
@@ -111,8 +110,9 @@ if __name__ == '__main__':
     print(f"Shortest path between {start} and {end}: {route_graph.shortest_path(start, end)}")
     
     print("BFS from Mumbai:")
-    route_graph.bfs("Mumbai")
+    # route_graph.bfs("Mumbai")
     
     print("\nDFS from Mumbai:")
     route_graph.dfs("Mumbai")
+    route_graph.bfs("Mumbai")
 

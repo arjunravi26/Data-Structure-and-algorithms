@@ -34,6 +34,7 @@ class Trie:
             if curr.child[index] is None:
                 return False
             curr = curr.child[index]
+            print(chr(index + ord('a')))
         return True
 
     def delete_key(self, key):
@@ -58,7 +59,7 @@ class Trie:
 trie = Trie()
 trie.insert_key(trie.root, 'abc')
 trie.insert_key(trie.root, 'hgf')
+trie.prefix_search(trie.root,'abc')
 print(trie.search_key(trie.root, 'hgf'))
 print(trie.delete_key("hgf"))
 print(trie.search_key(trie.root, 'hgf'))
-print(hash("sda"))
