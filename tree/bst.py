@@ -32,20 +32,19 @@ class BST:
     def delete(self, key, node):
         if self.root is None:
             return None
-        while node:
-            if key < node.value:
-                node.left = self.delete(key, node.left)
-            elif key > node.value:
-                node.right = self.delete(key, node.right)
-            else:
-                if node.left is None:
-                    return node.right
-                if node.right is None:
-                    return node.left
-                temp = self.find_min(node.right)
-                node.value = temp.value
-                node.right = self.delete(temp.value, node.right)
-            return node
+        if key < node.value:
+            node.left = self.delete(key, node.left)
+        elif key > node.value:
+            node.right = self.delete(key, node.right)
+        else:
+            if node.left is None:
+                return node.right
+            if node.right is None:
+                return node.left
+            temp = self.find_min(node.right)
+            node.value = temp.value
+            node.right = self.delete(temp.value, node.right)
+        return node
 
     def search(self, key):
         def _search(node, key):
@@ -96,8 +95,8 @@ class BST:
     def postorder(self, node):
         if node is None:
             return
-        self.inorder(node.left)
-        self.inorder(node.right)
+        self.postorder(node.left)
+        self.postorder(node.right)
         print(node.value)
 
     def inorder(self, node):
@@ -111,8 +110,8 @@ class BST:
         if node is None:
             return
         print(node.value)
-        self.inorder(node.left)
-        self.inorder(node.right)
+        self.preorder(node.left)
+        self.preorder(node.right)
 
     def height(self, node):
         if node is None:
@@ -120,15 +119,16 @@ class BST:
         left = self.height(node.left)
         right = self.height(node.right)
         return max(left, right) + 1
-    def depth(self,root,key,depth=0):
+
+    def depth(self, root, key, depth=0):
         if root is None:
             return -1
         if root.value == key:
             return depth
-        left = self.depth(root.left,key,depth+1)
+        left = self.depth(root.left, key, depth+1)
         if left != -1:
             return depth
-        return self.depth(root.right,key,depth+1)
+        return self.depth(root.right, key, depth+1)
 
 
 tree = BST()
@@ -136,10 +136,10 @@ tree.insert(10)
 tree.insert(20)
 tree.insert(0)
 tree.insert(100)
-# tree.delete(10, tree.root)
+tree.delete(10, tree.root)
 tree.inorder(tree.root)
 print(tree.search(20))
 print(tree.sum_of_nodes())
 print(tree.findclosetnode(20))
-print(tree.depth(tree.root,100))
+print(tree.depth(tree.root, 100))
 print(tree.height(tree.root))

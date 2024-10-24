@@ -17,10 +17,10 @@ class MaxHeap:
             return False
         if len(self.heap) == 1:
             return self.heap.pop()
-        root_node = self.heap[0]
+        del_node = self.heap[0]
         self.heap[0] = self.heap.pop()
         self._heapify_down(0)
-        return root_node
+        return del_node
 
     def _heapify_down(self, idx):
         large_idx = idx
