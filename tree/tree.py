@@ -45,8 +45,8 @@ class Tree:
         node_delete.value = curr.value
         self._delete_last(curr)
 
-    def _delete_last(node):
-        queue = [node]
+    def _delete_last(self,node):
+        queue = [self.root]
         while queue:
             curr = queue.pop(0)
             if curr.left:
@@ -99,17 +99,20 @@ class Tree:
         self.inorder(node.right)
 
 
+
 bt = Tree()
 bt.insert(10)
-bt.insert(20)
-bt.insert(30)
+# bt.insert(20)
+# bt.insert(30)
 bt.insert(40)
 bt.insert(50)
 bt.insert(60)
 bt.insert(70)
-bt.insert(80)
+# bt.insert(80)
 bt.inorder(bt.root)
-print(bt.search(130))
-print(bt.find_depth(bt.root, 40))
-print(bt.height(bt.root))
-bt.print_tree(bt.root)
+print()
+bt.delete(40)
+bt.inorder(bt.root)
+# print(bt.search(130))
+# print(bt.find_depth(bt.root, 40))
+# print(bt.height(bt.root))
