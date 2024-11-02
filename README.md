@@ -1,4 +1,4 @@
-# Data Structure and Algorithms using Python.
+# Data Structure and Algorithms using Python
 
 This repository contains implementations of fundamental data structures and algorithms using Python. It serves as a comprehensive guide for those looking to enhance their understanding of core concepts like arrays, linked lists, recursion, sorting, searching, and more.
 
